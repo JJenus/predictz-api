@@ -35,7 +35,12 @@ public class FreePickService {
 
         if (freePicks.isEmpty()){
             ApiLimit limit = apiLimitRepo.findByApiName(FootballPrediction.NAME);
-            if (limit == null) {
+            if (limit != null){
+                if (limit.getStatus().equalsIgnoreCase("loading") || ! (limit.getCurrentRate() <= limit.getRateLimit()/2)){
+                    return freePicks;
+                }
+            }
+            else {
                 limit = lockTransaction(
                         new ApiLimit(
                                 FootballPrediction.NAME,
@@ -46,11 +51,6 @@ public class FreePickService {
                 );
             }
 
-            if (! (limit.getCurrentRate() <= limit.getRateLimit()/2))
-                return freePicks;
-            if (limit.getStatus().equalsIgnoreCase("loading")){
-                return freePicks;
-            }
             limit.setCurrentRate(0);
             lockTransaction(limit);
             freePicks.addAll(footballPrediction.getFreePicks(date));

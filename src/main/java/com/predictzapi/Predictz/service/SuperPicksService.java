@@ -31,7 +31,12 @@ public class SuperPicksService {
 
         if (superPicks.isEmpty()){
             ApiLimit limit = apiLimitRepo.findByApiName(SportsBettingPredictions.NAME);
-            if (limit == null) {
+            if (limit != null){
+                if (limit.getStatus().equalsIgnoreCase("loading") || ! (limit.getCurrentRate() <= limit.getRateLimit()/2)){
+                    return superPicks;
+                }
+            }
+            else {
                 limit = lockTransaction(
                         new ApiLimit(
                                 SportsBettingPredictions.NAME,
@@ -42,11 +47,6 @@ public class SuperPicksService {
                 );
             }
 
-            if (! (limit.getCurrentRate() <= limit.getRateLimit()/2))
-                return superPicks;
-            if (limit.getStatus().equalsIgnoreCase("loading")){
-                return superPicks;
-            }
             limit.setCurrentRate(0);
             lockTransaction(limit);
             superPicks.addAll(predictions.getSuperPicks(date));
