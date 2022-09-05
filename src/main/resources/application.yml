@@ -6,13 +6,13 @@ server:
 #mysql://b087565cacb75e:5c6012f8@us-cdbr-east-06:cleardb:net/heroku_dc4d2f6f3feff93?reconnect=true
 spring:
   datasource:
-#    password: "5c6012f8"
-#    url: "jdbc:mysql://us-cdbr-east-06.cleardb.net/heroku_dc4d2f6f3feff93?reconnect=true"
-#    username: "b087565cacb75e"
+    password: "5c6012f8"
+    url: "jdbc:mysql://us-cdbr-east-06.cleardb.net/heroku_dc4d2f6f3feff93?reconnect=true"
+    username: "b087565cacb75e"
 #    LOCAL HOST
-    password:
-    url: "jdbc:mysql://localhost:3306/predictz_db?reconnect=true"
-    username: root
+#    password:
+#    url: "jdbc:mysql://localhost:3306/predictz_db?reconnect=true"
+#    username: root
   jpa:
     hibernate:
       ddl-auto: update
