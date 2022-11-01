@@ -25,7 +25,7 @@ public class FootballPrediction {
         result = temp.exchange(url, HttpMethod.GET, httpEntity, Result.class).getBody();
 
         System.out.println("Fetched");
-        return result.data;
+        return result.data.subList(0, 50);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)

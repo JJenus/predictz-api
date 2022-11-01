@@ -14,19 +14,21 @@ import java.util.Calendar;
 import java.util.List;
 
 @Service
-@Slf4j
 public class SuperPicksService {
-    private SportsBettingPredictions predictions = new SportsBettingPredictions();
+    private SportsBettingPredictions predictions;
     @Autowired
     private SuperPickRepo superPickRepo;
     @Autowired
     private ApiLimitRepo apiLimitRepo;
     private int retries = 0;
 
+    public  SuperPicksService(){
+        predictions = new SportsBettingPredictions();
+    }
+
     public List<SuperPick> getPicks() {
         String date = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
         System.out.println("Date: "+date);
-        log.debug("Date: "+date);
         List<SuperPick> superPicks = superPickRepo.findByGameDate(date);
 
         if (superPicks.isEmpty()){

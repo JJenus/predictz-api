@@ -5,8 +5,11 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Data
 @Entity
+@Getter
+@Setter
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

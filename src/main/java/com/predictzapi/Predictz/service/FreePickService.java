@@ -2,24 +2,20 @@ package com.predictzapi.Predictz.service;
 
 import com.predictzapi.Predictz.model.ApiLimit;
 import com.predictzapi.Predictz.model.FreePick;
-import com.predictzapi.Predictz.model.SuperPick;
 import com.predictzapi.Predictz.repository.ApiLimitRepo;
 import com.predictzapi.Predictz.repository.FreePickRepo;
 import com.predictzapi.Predictz.util.api.FootballPrediction;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.net.www.MimeTable;
-
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 @Service
 @Slf4j
 public class FreePickService {
-    FootballPrediction footballPrediction = new FootballPrediction();
+    FootballPrediction footballPrediction;
     @Autowired
     FreePickRepo freePickRepo;
 
@@ -27,13 +23,17 @@ public class FreePickService {
     @Autowired
     private ApiLimitRepo apiLimitRepo;
 
+    public FreePickService(){
+        footballPrediction = new FootballPrediction();
+    }
+
     public List<FreePick> getPicks() {
         String date = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
-        System.out.println("Date: "+date);
         log.debug("Date: "+date);
         List<FreePick> freePicks = freePickRepo.findByGameDate(date);
 
         if (freePicks.isEmpty()){
+            log.debug("Status: Is empty");
             ApiLimit limit = apiLimitRepo.findByApiName(FootballPrediction.NAME);
             if (limit != null){
                 if (limit.getStatus().equalsIgnoreCase("loading") || ! (limit.getCurrentRate() <= limit.getRateLimit()/2)){
@@ -59,6 +59,8 @@ public class FreePickService {
                 freePickRepo.saveAll(freePicks);
                 unlockTransaction(finalLimit);
             }).start();
+        } else {
+            log.debug("Not empty");
         }
         return freePicks;
     }

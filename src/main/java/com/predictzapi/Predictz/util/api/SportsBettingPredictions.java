@@ -38,27 +38,8 @@ public class SportsBettingPredictions {
         RestTemplate temp = new RestTemplate();
         result= temp.exchange(url, HttpMethod.GET, httpEntity, Result.class).getBody();
         List<SuperPick> superPicks = new ArrayList<>();
-        for (Data data: result.data){
-            SuperPick pick = new SuperPick();
-            pick.setPrediction(data.getPrediction());
-            pick.setId(data.getId());
-            pick.setDate(data.getDate());
-            pick.setMarket_name(data.getMarket_name());
-            pick.setCountry(data.getCountry());
-            pick.setProbability(data.getProbability());
-            pick.setSport_name(data.getSport_name());
-            pick.setAway_team(data.getAway_team());
-            pick.setHome_team(data.getHome_team());
-            pick.setCompetition(data.getCompetition());
-            pick.setMarket_id(data.getMarket_id());
-            pick.setFixture_status(data.getFixture_status());
-            pick.setFixture_id(data.getFixture_id());
-            pick.setOdd(data.getOdd());
-            pick.setSport_id(data.getSport_id());
-            pick.setResults(data.getResults());
-
-            superPicks.add(pick);
-        }
+        if (superPicks.size() > 20)
+            return superPicks.subList(0, 20);
         return superPicks;
     }
 
@@ -66,27 +47,6 @@ public class SportsBettingPredictions {
     @lombok.Data
     public static class Result {
         private String status;
-        private List<Data> data;
-    }
-
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    @lombok.Data
-    public static class Data{
-        private String away_team;
-        private String competition;
-        private String country;
-        private String date;
-        private long fixture_id;
-        private String fixture_status;
-        private String home_team;
-        private long id;
-        private String market_id;
-        private String market_name;
-        private String odd;
-        private String prediction;
-        private String probability;
-        private String results;
-        private String sport_id;
-        private String sport_name;
+        private List<SuperPick> data;
     }
 }

@@ -1,16 +1,20 @@
 package com.predictzapi.Predictz.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Data
-@NoArgsConstructor
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+
 public class ApiLimit {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

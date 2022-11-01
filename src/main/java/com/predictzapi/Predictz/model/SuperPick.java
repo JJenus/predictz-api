@@ -1,7 +1,7 @@
 package com.predictzapi.Predictz.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +9,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-@Data
+@JsonIgnoreProperties(ignoreUnknown = true)
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class SuperPick {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface SuperPickRepo extends JpaRepository<SuperPick, Long> {
-    @Query(value = "Select * from super_pick where DATE(date) = :idate", nativeQuery = true)
+    @Query(value = "Select * from super_pick where DATE(date) = DATE(:idate) LIMIT 20", nativeQuery = true)
     List<SuperPick> findByGameDate(@Param(value = "idate") String idate);
 }
