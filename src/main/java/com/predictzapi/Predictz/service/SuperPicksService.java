@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.List;
 
 @Service
+@Slf4j
 public class SuperPicksService {
     private SportsBettingPredictions predictions;
     @Autowired
@@ -32,6 +33,7 @@ public class SuperPicksService {
         List<SuperPick> superPicks = superPickRepo.findByGameDate(date);
 
         if (superPicks.isEmpty()){
+            log.debug("Is empty");
             ApiLimit limit = apiLimitRepo.findByApiName(SportsBettingPredictions.NAME);
             if (limit != null){
                 if (limit.getStatus().equalsIgnoreCase("loading") || ! (limit.getCurrentRate() <= limit.getRateLimit()/2)){
@@ -57,6 +59,8 @@ public class SuperPicksService {
                 superPickRepo.saveAll(superPicks);
                 unlockTransaction(finalLimit);
             }).start();
+        }else {
+            log.debug("Not empty");
         }
         return superPicks;
     }
